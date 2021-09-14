@@ -105,20 +105,50 @@ const options = {
           },
           component: BlankView,
           children: [
+            // {
+            //   path: '404',
+            //   name: 'Exp404',
+            //   component: () => import('@/pages/exception/404')
+            // },
+            // {
+            //   path: '403',
+            //   name: 'Exp403',
+            //   component: () => import('@/pages/exception/403')
+            // },
+            // {
+            //   path: '500',
+            //   name: 'Exp500',
+            //   component: () => import('@/pages/exception/500')
+            // },
             {
-              path: '404',
-              name: 'Exp404',
-              component: () => import('@/pages/exception/404')
+              path: 'publishView',
+              name: '发行展示',
+              component: () => import('@/pages/CardProductSupplyChain/publishView/publishView')
             },
             {
-              path: '403',
-              name: 'Exp403',
-              component: () => import('@/pages/exception/403')
+              path: 'publishPreparation',
+              name: '发行准备',
+              component: () => import('@/pages/CardProductSupplyChain/publishPreparation/publishPreparation')
             },
             {
-              path: '500',
-              name: 'Exp500',
-              component: () => import('@/pages/exception/500')
+              path: 'publishChange',
+              name: '发行变更',
+              component: () => import('@/pages/CardProductSupplyChain/publishChange/publishChange')
+            },
+            {
+              path: 'inventoryManagement',
+              name: '库存管理',
+              component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/inventoryManagement')
+            },
+            {
+              path: 'dailyManagement',
+              name: '日常管理',
+              component: () => import('@/pages/CardProductSupplyChain/dailyManagement/dailyManagement')
+            },
+            {
+              path: 'costSettlement',
+              name: '费用结算',
+              component: () => import('@/pages/CardProductSupplyChain/costSettlement/costSettlement')
             }
           ]
         },
