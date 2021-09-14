@@ -1,6 +1,6 @@
 <template>
   <div class="new-page" :style="`min-height: ${pageMinHeight}px`">
-    <h1>{{$t('content')}}</h1>
+    <h1>{{$t('description')}}</h1>
   </div>
 </template>
 
@@ -23,5 +23,10 @@
 </script>
 
 <style scoped lang="less">
-@import "index";
+  @import "index";
+  .new-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
 </style>

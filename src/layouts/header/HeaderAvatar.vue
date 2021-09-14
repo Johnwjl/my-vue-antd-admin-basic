@@ -5,13 +5,17 @@
       <span class="name">{{user.name}}</span>
     </div>
     <a-menu :class="['avatar-menu']" slot="overlay">
-      <a-menu-item>
+      <!-- <a-menu-item>
         <a-icon type="user" />
         <span>个人中心</span>
-      </a-menu-item>
-      <a-menu-item>
+      </a-menu-item> -->
+      <!-- <a-menu-item>
         <a-icon type="setting" />
         <span>设置</span>
+      </a-menu-item> -->
+      <a-menu-item>
+        <a-icon type="user" />
+        <span>外出授权</span>
       </a-menu-item>
       <a-menu-divider />
       <a-menu-item @click="logout">

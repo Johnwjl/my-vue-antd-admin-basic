@@ -1,8 +1,8 @@
 module.exports = {
   messages: {
     CN: {
-      content: '演示页面',
-      description: '这是一个演示页面'
+      content: '起始页',
+      description: '欢迎进入作业运营管理平台'
     },
     HK: {
       content: '演示頁面',
