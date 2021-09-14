@@ -98,7 +98,7 @@ const options = {
           component: () => import('@/pages/demo')
         },
         {
-          path: 'exception',
+          path: 'CardProductSupplyChain',
           name: '卡产品供应链',
           meta: {
             icon: 'credit-card',
@@ -138,7 +138,45 @@ const options = {
             {
               path: 'inventoryManagement',
               name: '库存管理',
-              component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/inventoryManagement')
+              component: BlankView,
+              children: [
+                {
+                  path: 'cardOrder',
+                  name: '卡基订购',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/cardOrder')
+                },
+                {
+                  path: 'cardCraft',
+                  name: '卡基工艺',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/cardCraft')
+                },
+                {
+                  path: 'cardOut',
+                  name: '卡基出库',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/cardOut')
+                },
+                {
+                  path: 'cardDestroy',
+                  name: '卡基销毁',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/cardDestroy')
+                },
+                {
+                  path: 'changeApproval',
+                  name: '变更审核',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/changeApproval')
+                },
+                {
+                  path: 'overstockWarning',
+                  name: '积压提醒',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/overstockWarning')
+                },
+                {
+                  path: 'additionalWarning',
+                  name: '增订提醒',
+                  component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/additionalWarning')
+                },
+              ]
+              // component: () => import('@/pages/CardProductSupplyChain/inventoryManagement/inventoryManagement')
             },
             {
               path: 'dailyManagement',
