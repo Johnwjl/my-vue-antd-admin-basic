@@ -13,7 +13,7 @@ module.exports = {
   hideSetting: true,  
   systemName: '作业运营管理平台',         //系统名称
   animate: {
-    disabled: false,
+    disabled: true,
     name: 'lightSpeed',
     direction: 'left'
   },

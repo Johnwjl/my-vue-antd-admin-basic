@@ -6,67 +6,95 @@
           <a-row>
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="规则编号"
+                label="订购发起日"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
-                <a-input placeholder="请输入" />
+                <a-date-picker style="width: 100%" placeholder="请输入日期" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="使用状态"
+                label="卡厂"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
-                <a-select placeholder="请选择">
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
+                <a-select placeholder="请选择" allowClear>
+                  <a-select-option value="1">A厂</a-select-option>
+                  <a-select-option value="2">B厂</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="调用次数"
+                label="产品团队"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
-                <a-input-number style="width: 100%" placeholder="请输入" />
+                <a-select placeholder="请选择" allowClear>
+                  <a-select-option value="1">A队</a-select-option>
+                  <a-select-option value="2">B队</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </a-row>
           <a-row v-if="advanced">
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="更新日期"
+                label="卡基编号"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
-                <a-date-picker
-                  style="width: 100%"
-                  placeholder="请输入更新日期"
-                />
+                <a-input placeholder="请输入" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="使用状态"
+                label="订购状态"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
-                <a-select placeholder="请选择">
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
+                <a-select placeholder="请选择" allowClear>
+                  <a-select-option value="1">已订购</a-select-option>
+                  <a-select-option value="2">订购中</a-select-option>
+                  <a-select-option value="3">未订购</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item
-                label="描述"
+                label="是否删除"
+                :labelCol="{ span: 5 }"
+                :wrapperCol="{ span: 18, offset: 1 }"
+              >
+                <a-select placeholder="请选择" allowClear>
+                  <a-select-option value="1">是</a-select-option>
+                  <a-select-option value="2">否</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row v-if="advanced">
+            <a-col :md="8" :sm="24">
+              <a-form-item
+                label="卡基名称"
                 :labelCol="{ span: 5 }"
                 :wrapperCol="{ span: 18, offset: 1 }"
               >
                 <a-input placeholder="请输入" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item
+                label="产品经理"
+                :labelCol="{ span: 5 }"
+                :wrapperCol="{ span: 18, offset: 1 }"
+              >
+                <a-select placeholder="请选择" allowClear>
+                  <a-select-option value="1">张三</a-select-option>
+                  <a-select-option value="2">刘</a-select-option>
+                  <a-select-option value="3">王</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </a-row>
@@ -82,17 +110,15 @@
       </a-form>
     </div>
     <div>
+      <!-- 操作按钮 -->
       <a-space class="operator">
-        <a-button @click="addNew" type="primary">新建</a-button>
-        <a-button>批量操作</a-button>
-        <a-dropdown>
-          <a-menu @click="handleMenuClick" slot="overlay">
-            <a-menu-item key="delete">删除</a-menu-item>
-            <a-menu-item key="audit">审批</a-menu-item>
-          </a-menu>
-          <a-button> 更多操作 <a-icon type="down" /> </a-button>
-        </a-dropdown>
+        <a-button @click="showModal" type="primary">新增</a-button>
+        <a-button>编辑</a-button>
+        <a-button>提交</a-button>
+        <a-button>审批通过</a-button>
+        <a-button>退回</a-button>
       </a-space>
+      <!-- 表格组件 -->
       <standard-table
         :columns="columns"
         :dataSource="dataSource"
@@ -118,31 +144,58 @@
           >
         </div>
         <template slot="statusTitle">
+          订购状态
           <a-icon @click.native="onStatusTitleClick" type="info-circle" />
         </template>
       </standard-table>
+      <!-- 新增弹窗 -->
+      <a-modal
+        v-model="visible"
+        :width="1000"
+        title="新增"
+        on-ok="handleOk"
+        :maskClosable="false"
+        :centered="true"
+      >
+        <template slot="footer">
+          <a-button key="back" @click="handleCancel">
+            取消
+          </a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="loading"
+            @click="handleOk"
+          >
+            提交
+          </a-button>
+        </template>
+        <!-- basicForm -->
+        <basic-form></basic-form>
+      </a-modal>
     </div>
   </a-card>
 </template>
 
 <script>
 import StandardTable from '@/components/table/StandardTable'
+import BasicForm from '@/pages/form/basic/BasicForm'
 const columns = [
   {
-    title: '规则编号',
+    title: '卡基编号',
     dataIndex: 'no',
   },
   {
-    title: '描述',
+    title: '卡基名称',
     dataIndex: 'description',
     scopedSlots: { customRender: 'description' },
   },
   {
-    title: '服务调用次数',
+    title: '卡厂',
     dataIndex: 'callNo',
     sorter: true,
     needTotal: true,
-    customRender: (text) => text + ' 次',
+    customRender: (text) => text + ' 分厂',
   },
   {
     dataIndex: 'status',
@@ -150,7 +203,7 @@ const columns = [
     slots: { title: 'statusTitle' },
   },
   {
-    title: '更新时间',
+    title: '订购发起日',
     dataIndex: 'updatedAt',
     sorter: true,
   },
@@ -166,22 +219,26 @@ for (let i = 0; i < 100; i++) {
   dataSource.push({
     key: i,
     no: 'NO ' + i,
-    description: '这是一段描述',
+    description: 'no12345678',
     callNo: Math.floor(Math.random() * 1000),
-    status: Math.floor(Math.random() * 10) % 4,
+    // status: Math.floor(Math.random() * 10) % 4,
+    status: '已订购',
     updatedAt: '2018-07-26',
   })
 }
 
 export default {
   name: 'QueryList',
-  components: { StandardTable },
+  components: { StandardTable, BasicForm },
   data() {
     return {
       advanced: true,
       columns: columns,
       dataSource: dataSource,
       selectedRows: [],
+      //
+      loading: false,
+      visible: false,
     }
   },
   authorize: {
@@ -229,6 +286,20 @@ export default {
         this.remove()
       }
     },
+    //
+    showModal() {
+      this.visible = true
+    },
+    handleOk() {
+      this.loading = true
+      setTimeout(() => {
+        this.visible = false
+        this.loading = false
+      }, 3000)
+    },
+    handleCancel() {
+      this.visible = false
+    },
   },
 }
 </script>
@@ -248,5 +319,15 @@ export default {
   .fold {
     width: 100%;
   }
+}
+// /deep/ .ant-modal {
+//   top: 50px;
+// }
+/deep/ .ant-modal-body {
+  max-height: 800px;
+  overflow-y: auto;
+}
+/deep/ .ant-modal-wrap {
+  overflow: hidden;
 }
 </style>
